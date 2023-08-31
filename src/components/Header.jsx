@@ -13,7 +13,7 @@ const Header = () => {
 
     return (
         <header >
-            <nav className='flex justify-between text-White max-w-[80%] mx-auto pt-8'>
+            <nav className='flex justify-between text-White max-w-[90%] sm:max-w-[85%] mx-auto pt-8'>
                 <h1 className='font-bold text-2xl'>My <span className='text-Blue uppercase'>wallet 😊</span></h1>
                 <div className='flex items-center justify-between gap-4'>
                     <NavLink to={"/comming-soon"}>QR</NavLink>

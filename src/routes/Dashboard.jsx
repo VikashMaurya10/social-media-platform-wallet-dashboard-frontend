@@ -70,7 +70,7 @@ const Dashboard = () => {
 
         <>
             <Header />
-            <main className='max-w-[80%] mx-auto'>
+            <main className='max-w-[90%] sm:max-w-[85%] mx-auto'>
                 <Wallet
                     _this={{
                         userData,

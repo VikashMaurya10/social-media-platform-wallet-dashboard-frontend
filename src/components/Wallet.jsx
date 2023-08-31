@@ -55,7 +55,7 @@ const Wallet = ({ _this }) => {
   return (
     <div className='grid md:grid-cols-2 lg:grid-cols-4 gap-8 py-8'>
       <div className='h-[150px] grid place-items-center bg-Gray text-White rounded-lg  p-3 text-center hover:bg-LightGray transition-colors duration-300'>
-        <div className='flex items-center gap-4'>
+        <div className='flex items-center gap-4 '>
           <h1 className=''>Total Balance </h1>
           {showBaln ?
             <AiOutlineEye className='text-xl cursor-pointer'
@@ -66,10 +66,8 @@ const Wallet = ({ _this }) => {
               onClick={handleShowBlan}
             />}
         </div>
-        <h1 className='h-8 text-center'>
-          {
-            showBaln ? _this.userData.balance : <></>
-          }
+        <h1 className={`h-8 text-center p-1 ${showBaln ? "" : "blur-sm w-full bg-white/10"}`}>
+          {_this.userData.balance}
         </h1>
       </div>
 
@@ -108,11 +106,11 @@ const Wallet = ({ _this }) => {
       </div>
 
       {/* add money to wallet model */}
-      <div className={`absolute w-screen min-h-screen inset-0 ${showAddMoneyModel ? "flex items-center justify-center" : "hidden"} backdrop-blur-[3px] bg-white/10 transition-all`}
+      <div className={`fixed w-screen h-screen -translate-x-1/2 -translate-y-1/2 bottom-0 left-1/2 right-0 top-1/2 ${showAddMoneyModel ? "flex items-center justify-center overflow-hidden" : "hidden"} backdrop-blur-[3px] bg-white/10 transition-all`}
         onClick={handleCloseMoneyModel}
         id='moneyModel'
       >
-        <div className='relative grid place-items-center w-[400px] h-[300px]  p-4 bg-slate-400 rounded'>
+        <div className='relative grid place-items-center sm:w-[400px] w-full h-[300px] mx-4 p-4 bg-slate-400 rounded'>
           <button className='absolute right-1 top-1'
             onClick={handleShowMoneyModel}
           ><RiCloseFill className='text-3xl' /></button>

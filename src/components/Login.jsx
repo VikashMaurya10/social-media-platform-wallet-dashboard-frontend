@@ -49,7 +49,7 @@ const Login = ({ _this }) => {
 
     return (
         <div className='flex justify-center items-center min-h-screen'>
-            <div className='bg-LightGray backdrop-blur bg-white/10 w-[400px] h-fit rounded text-White  p-8'>
+            <div className='bg-LightGray backdrop-blur bg-white/10 sm:w-[400px] w-full h-fit rounded text-White  p-8 mx-4'>
                 <h1 className='text-center mt-3 text-2xl font-semibold cursor-default'>Wallet Login</h1>
                 <form className='flex flex-col justify-center items-center gap-4 mt-5'>
                     <div className='w-full'>
