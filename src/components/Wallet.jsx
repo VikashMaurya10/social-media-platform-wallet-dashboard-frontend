@@ -7,15 +7,12 @@ import { PiArrowFatLinesDownFill } from 'react-icons/pi'
 import { RiCloseFill } from 'react-icons/ri'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
+import Model from './Model'
 
 const Wallet = ({ _this }) => {
   const [showBaln, setShowBlan] = useState(true)
   const [showAddMoneyModel, setshowAddMoneyModel] = useState(false)
 
-  const [addManeyData, setAddManeyData] = useState({
-    amount: "",
-    remark: ''
-  })
 
   const Navigate = useNavigate()
 
@@ -32,24 +29,13 @@ const Wallet = ({ _this }) => {
     if (e.target.id === "moneyModel") setshowAddMoneyModel(false)
   }
 
-  const handleAddManeyData = (e) => {
-    const { name, value } = e.target
-    setAddManeyData({
-      ...addManeyData, [name]: value
-    })
-  }
-
   const handleAddMoney_btn = (addManeyData) => {
-    const isAmount = addManeyData.amount.trim()
+    const isAmount = addManeyData.amount
     if (!isAmount) return toast.warn("amount can't be empty ")
     if (Math.sign(isAmount) == 0) return toast.warn("amount can't be zero ")
     if (Math.sign(isAmount) == -1) return toast.warn("amount can't Negative")
     _this.updateWallet(addManeyData)
     setshowAddMoneyModel(!showAddMoneyModel)
-    setAddManeyData({
-      amount: "",
-      remark: ''
-    })
   }
 
   return (
@@ -71,6 +57,7 @@ const Wallet = ({ _this }) => {
         </h1>
       </div>
 
+      {/* disposit */}
       <div className='group grid place-items-center bg-Gray h-[150px] text-White rounded-lg cursor-pointer p-3 text-center hover:bg-LightGray transition-colors duration-300'
         onClick={handleShowMoneyModel}
       >
@@ -81,6 +68,7 @@ const Wallet = ({ _this }) => {
         </div>
       </div>
 
+      {/* withdrow */}
       <div className='group grid place-items-center bg-Gray h-[150px] text-White rounded-lg cursor-pointer p-3 text-center hover:bg-LightGray 
       transition-colors duration-300'
         onClick={() => {
@@ -93,6 +81,7 @@ const Wallet = ({ _this }) => {
         </div>
       </div>
 
+      {/* receive money */}
       <div className='group grid place-items-center bg-Gray h-[150px] text-White rounded-lg cursor-pointer p-3 text-center hover:bg-LightGray transition-colors duration-300'
         onClick={() => {
           Navigate("/comming-soon")
@@ -106,40 +95,12 @@ const Wallet = ({ _this }) => {
       </div>
 
       {/* add money to wallet model */}
-      <div className={`fixed w-screen h-screen -translate-x-1/2 -translate-y-1/2 bottom-0 left-1/2 right-0 top-1/2 ${showAddMoneyModel ? "flex items-center justify-center overflow-hidden" : "hidden"} backdrop-blur-[3px] bg-white/10 transition-all`}
-        onClick={handleCloseMoneyModel}
-        id='moneyModel'
-      >
-        <div className='relative grid place-items-center sm:w-[400px] w-full h-[300px] mx-4 p-4 bg-slate-400 rounded'>
-          <button className='absolute right-1 top-1'
-            onClick={handleShowMoneyModel}
-          ><RiCloseFill className='text-3xl' /></button>
-
-          <div className='flex flex-col gap-3 w-[80%] max-h-full'>
-            <input type="number" name='amount' placeholder='Enter amount here..'
-              value={addManeyData.amount}
-              onChange={handleAddManeyData}
-              className='block outline-none text-black w-full py-[0.3rem] px-2 rounded' />
-            <div className='flex flex-col'>
-              <label htmlFor="remark" className='text-gray-500'>Optional</label>
-              <textarea type="text" name='remark' placeholder='Remark..'
-                onChange={handleAddManeyData}
-                value={addManeyData.remark}
-
-                className='block outline-none text-black w-full py-[0.3rem] px-2 rounded' />
-            </div>
-            <button
-              className='bg-blue-700 ml-auto mr-0 text-white max-w-fit py-[0.4rem] px-4 rounded font-medium hover:bg-blue-500 transition-all duration-300'
-
-              onClick={() => {
-                handleAddMoney_btn(addManeyData)
-              }}
-            >
-              Add Money
-            </button>
-          </div>
-        </div>
-      </div>
+      <Model _this={{
+        handleShowMoneyModel,
+        handleCloseMoneyModel,
+        handleAddMoney_btn,
+        showAddMoneyModel,
+      }} />
 
     </div>
   )
