@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import Wallet from '../components/Wallet'
 import Header from '../components/Header';
 import { toast } from 'react-toastify';
+import Transections from '../components/Transections';
 
 const Dashboard = () => {
     const Navigate = useNavigate()
@@ -14,6 +15,7 @@ const Dashboard = () => {
     const decodedToken = jwt_decode(authToken);
 
     const [userData, setUserData] = useState([])
+    const [transections, setTransections] = useState([])
 
     const isAuthurized = () => {
         if (authToken) {
@@ -21,9 +23,11 @@ const Dashboard = () => {
             const currentTimestamp = Math.floor(Date.now() / 1000);
 
             if (currentTimestamp >= expirationTimestamp) {
+
                 localStorage.removeItem('authToken');
                 toast.warn("Session Expired Please login again")
                 Navigate("/login")
+                window.location.reload()
             }
         } else {
             Navigate("/login")
@@ -53,33 +57,56 @@ const Dashboard = () => {
             },
             data: data
         }).then((res) => {
+            console.log(res);
             getUserData()
-            toast.success("Succesfully added the money")
+            transectionHistory()
+            if (res?.error) return toast.success("Succesfully updated you wallet")
+            toast.success("Succesfully updated your wallet")
         }).catch((err) => {
             console.log(err);
             toast.error("Try after sometime")
         })
     }
 
+    const transectionHistory = async () => {
+        await axios({
+            method: 'get',
+            url: `${base_URL}/dashboard/transactions/${decodedToken.id}`,
+            headers: {
+                'x-auth-token': authToken
+            }
+        }).then((res) => {
+            setTransections(res?.data)
+            console.log(res);
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+
     useEffect(() => {
         getUserData()
         isAuthurized()
+        transectionHistory()
     }, [])
 
     return (
 
         <>
             <Header />
-            <main className='max-w-[90%] sm:max-w-[85%] mx-auto'>
+            <main className='max-w-[90%] sm:max-w-[85%] mx-auto pb-4'>
                 <Wallet
                     _this={{
                         userData,
 
                         isAuthurized,
                         getUserData,
-                        updateWallet
+                        updateWallet,
                     }}
                 />
+                <Transections _this={{
+                    transections
+                }} />
+
             </main>
         </>
     )
