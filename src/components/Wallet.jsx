@@ -10,11 +10,10 @@ import { useNavigate } from 'react-router-dom'
 import Model from './Model'
 
 const Wallet = ({ _this }) => {
+  const Navigate = useNavigate()
   const [showBaln, setShowBlan] = useState(true)
   const [showAddMoneyModel, setshowAddMoneyModel] = useState(false)
-
-
-  const Navigate = useNavigate()
+  const [showModel1, setModel1] = useState(false)
 
   const handleShowBlan = () => {
     setShowBlan(!showBaln)
@@ -27,6 +26,16 @@ const Wallet = ({ _this }) => {
 
   const handleCloseMoneyModel = (e) => {
     if (e.target.id === "moneyModel") setshowAddMoneyModel(false)
+
+  }
+
+  const handleShowModel1 = () => {
+    setModel1(!showModel1)
+  }
+
+  const handleCloseModel1 = (e) => {
+    if (e.target.id === "model1") setModel1(false)
+
   }
 
   const handleAddMoney_btn = (addManeyData) => {
@@ -34,8 +43,9 @@ const Wallet = ({ _this }) => {
     if (!isAmount) return toast.warn("amount can't be empty ")
     if (Math.sign(isAmount) == 0) return toast.warn("amount can't be zero ")
     if (Math.sign(isAmount) == -1) return toast.warn("amount can't Negative")
+    // if (Math.sign(_this.userData.balance - isAmount) == -1) return toast.warn("can't be done")
     _this.updateWallet(addManeyData)
-    setshowAddMoneyModel(!showAddMoneyModel)
+    showModel1 ? setModel1(!showModel1) : showAddMoneyModel ? setshowAddMoneyModel(!showAddMoneyModel) : <></>
   }
 
   return (
@@ -71,9 +81,7 @@ const Wallet = ({ _this }) => {
       {/* withdrow */}
       <div className='group grid place-items-center bg-Gray h-[150px] text-White rounded-lg cursor-pointer p-3 text-center hover:bg-LightGray 
       transition-colors duration-300'
-        onClick={() => {
-          Navigate("/comming-soon")
-        }}
+        onClick={handleShowModel1}
       >
         <div>
           <VscSend className='block m-auto mb-3 text-4xl -rotate-[25deg] group-hover:text-Blue transition-colors' />
@@ -95,13 +103,38 @@ const Wallet = ({ _this }) => {
       </div>
 
       {/* add money to wallet model */}
-      <Model _this={{
-        handleShowMoneyModel,
-        handleCloseMoneyModel,
-        handleAddMoney_btn,
-        showAddMoneyModel,
-      }} />
+      <div className={`fixed w-screen h-screen -translate-x-1/2 -translate-y-1/2 bottom-0 left-1/2 right-0 top-1/2 ${showAddMoneyModel ? "flex items-center justify-center overflow-hidden" : "hidden"} backdrop-blur-[3px] bg-white/10 transition-all`}
 
+        onClick={handleCloseMoneyModel}
+        id='moneyModel'
+      >
+        <div className='relative grid place-items-center sm:w-[400px] w-full h-[300px] mx-4 p-4 bg-slate-400 rounded'>
+          <button className='absolute right-1 top-1'
+            onClick={handleShowMoneyModel}
+          ><RiCloseFill className='text-3xl' /></button>
+          <Model _this={{
+            handleAddMoney_btn,
+            btnType: 'Add Money'
+          }} />
+        </div>
+      </div>
+
+      {/* send money model */}
+      <div className={`fixed w-screen h-screen -translate-x-1/2 -translate-y-1/2 bottom-0 left-1/2 right-0 top-1/2 ${showModel1 ? "flex items-center justify-center overflow-hidden" : "hidden"} backdrop-blur-[3px] bg-white/10 transition-all`}
+
+        onClick={handleCloseModel1}
+        id='model1'
+      >
+        <div className='relative grid place-items-center sm:w-[400px] w-full h-[300px] mx-4 p-4 bg-slate-400 rounded'>
+          <button className='absolute right-1 top-1'
+            onClick={handleShowModel1}
+          ><RiCloseFill className='text-3xl' /></button>
+          <Model _this={{
+            handleAddMoney_btn,
+            btnType: 'send Money'
+          }} />
+        </div>
+      </div>
     </div>
   )
 }

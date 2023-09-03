@@ -14,3 +14,18 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
 }
+
+.b {
+    border: 1px solid red;
+}
+
+td,
+th {
+    border: 1px solid gray;
+    @apply p-1;
+}
+
+::-webkit-scrollbar {
+    display: none;
+    scrollbar-width: none;
+}
